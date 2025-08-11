@@ -60,30 +60,51 @@ class GestureVocabulary:
             is_closed_fist = all_fingere_closed
 
         return is_closed_fist, image
-            
+        
+        
     def IndexFingerUp_run(self, image ,draw=False):
         """Detect index finger up gesture to recognise run in the image."""
         image = self.handT.findHands(image=image , draw=draw)
         positions,image = self.handT.findPosition(image=image , draw=draw)
         
         is_index_finger_up = False
-        other_finger_closed = True
         
         if len(positions)>=21:
-            for bp,tp in zip(self.basePoints,self.tipPoints):
+            other_finger_closed = True
+            for bp,tp in zip(self.basePoints,self,self.tipPoints):
                 if draw:
                     cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0,255,0),cv2.FILLED) 
                     cv2.circle(image,(positions[tp][1],positions[tp][2]),5,(255,0,0),cv2.FILLED)       
                     
-                if tp == 4:
-                    if abs(positions[tp][1] - positions[bp][1]) > 40:
-                        other_finger_closed = False
-                elif tp == 8:
-                    if positions[tp][2] < positions[bp][2]:
-                        is_index_finger_up = True
-                else:
+                
+                if tp!=8:
                     if positions[tp][2]< positions[bp][2]:
                         other_finger_closed = False
-
-        return is_index_finger_up and other_finger_closed,image
+                else:
+                    if positions[tp][2] < positions[bp][2]:
+                        is_index_finger_up = True
+                        
+        return is_index_finger_up and other_finger_closed
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
