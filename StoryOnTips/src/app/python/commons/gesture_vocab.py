@@ -7,6 +7,7 @@ class GestureVocabulary:
     def __init__(self):
         self.handT = HandTracker()
         self.tipPoints = [4, 8, 12, 16, 20]
+        self.middlePoints = [2, 6, 10, 14, 18]
         self.basePoints = [1, 5, 9, 13, 17]
 
     def OpenPalm_Tree(self, image, draw=False):
@@ -68,43 +69,78 @@ class GestureVocabulary:
         positions,image = self.handT.findPosition(image=image , draw=draw)
         
         is_index_finger_up = False
+        other_finger_closed = True
         
         if len(positions)>=21:
-            other_finger_closed = True
-            for bp,tp in zip(self.basePoints,self,self.tipPoints):
+            for bp,tp in zip(self.basePoints,self.tipPoints):
                 if draw:
                     cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0,255,0),cv2.FILLED) 
                     cv2.circle(image,(positions[tp][1],positions[tp][2]),5,(255,0,0),cv2.FILLED)       
                     
-                
-                if tp!=8:
-                    if positions[tp][2]< positions[bp][2]:
-                        other_finger_closed = False
-                else:
+                if tp == 4:
+                    if positions[tp][1] - positions[bp][1]>20:
+                        other_finger_closed  = False
+                elif tp == 8:
                     if positions[tp][2] < positions[bp][2]:
                         is_index_finger_up = True
+                else:
+                    if positions[tp][2] < positions[bp][2]:
+                        other_finger_closed = False        
                         
-        return is_index_finger_up and other_finger_closed
+        return is_index_finger_up and other_finger_closed,image
         
+    def MiddleFingerUp_Dog(self,image,draw=False):
+        """Detect middle finger up gesture to recognise dog in the image."""
+        image = self.handT.findHands(image=image,draw=draw)
+        positions,image =self.handT.findPosition(image=image,draw=draw)
+
+        is_middle_finger_up = False
+        other_finger_closed = True
+
+        if len(positions)>=21:
+            for bp,tp,mp in zip(self.basePoints,self.tipPoints,self.middlePoints):
+                if draw:
+                    cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0.255,0),cv2.FILLED)
+                    cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0.255,0),cv2.FILLED)
+
+                if tp == 4:
+                    if positions[tp]:
+                        if positions[tp][1] - positions[bp][1]>40:
+                            other_finger_closed  = False
+                elif tp == 12:
+                    if positions[tp][2] < positions[bp][2]:
+                        is_middle_finger_up = True
+                else:
+                    if positions[tp][2] < positions[mp][2]:
+                        other_finger_closed = False
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        return is_middle_finger_up and other_finger_closed,image
+    
+    def IndexMiddleFingerUp(self,image,draw=False):
+        """Detect middle finger and index finger up gesture to recognise peace in the image."""
+        image = self.handT.findHands(image=image,draw=draw)
+        positions,image = self.handT.findPosition(image=image,draw=draw)
+
+        is_index_finger_up = False
+        is_middle_finger_up = False
+        other_finger_closed = True
+
+        if len(positions)>=21:
+            for bp,tp,mp in zip(self.basePoints,self.tipPoints,self.middlePoints):
+                if draw:
+                    cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0.255,0),cv2.FILLED)
+                    cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0.255,0),cv2.FILLED)
+
+                if tp == 4:
+                    if positions[tp]:
+                        if positions[tp][1] - positions[bp][1]>40:
+                            other_finger_closed  = False
+                elif tp == 12:
+                    if positions[tp][2] < positions[bp][2]:
+                        is_middle_finger_up = True
+                elif tp == 8:
+                    if positions[tp][2] < positions[bp][2]:
+                        is_index_finger_up = True
+                else:
+                    if positions[tp][2] < positions[mp][2]:
+                        other_finger_closed = False 
