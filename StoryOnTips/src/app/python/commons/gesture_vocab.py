@@ -78,7 +78,7 @@ class GestureVocabulary:
                     cv2.circle(image,(positions[tp][1],positions[tp][2]),5,(255,0,0),cv2.FILLED)       
                     
                 if tp == 4:
-                    if positions[tp][1] - positions[bp][1]>20:
+                    if abs(positions[tp][1] - positions[bp][1])>20:
                         other_finger_closed  = False
                 elif tp == 8:
                     if positions[tp][2] < positions[bp][2]:
@@ -105,7 +105,7 @@ class GestureVocabulary:
 
                 if tp == 4:
                     if positions[tp]:
-                        if positions[tp][1] - positions[bp][1]>40:
+                        if abs(positions[tp][1] - positions[bp][1])>40:
                             other_finger_closed  = False
                 elif tp == 12:
                     if positions[tp][2] < positions[bp][2]:
@@ -130,16 +130,15 @@ class GestureVocabulary:
                 if draw:
                     cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0.255,0),cv2.FILLED)
                     cv2.circle(image,(positions[bp][1],positions[bp][2]),5,(0.255,0),cv2.FILLED)
-
                 if tp == 4:
                     if positions[tp]:
-                        if positions[tp][1] - positions[bp][1]>20:
+                        if abs(positions[mp][1]+1 - positions[5][1])>15:
                             other_finger_closed  = False
                 elif tp == 12:
-                    if positions[tp][2] < positions[bp][2]:
+                    if positions[tp][2] < positions[mp][2]:
                         is_middle_finger_up = True
                 elif tp == 8:
-                    if positions[tp][2] < positions[bp][2]:
+                    if positions[tp][2] < positions[mp][2]:
                         is_index_finger_up = True
                 else:
                     if positions[tp][2] < positions[mp][2]:
