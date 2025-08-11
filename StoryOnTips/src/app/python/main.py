@@ -20,7 +20,7 @@ def main():
         # is_fist_closed, annotated_frame = vocab.ClosedFist_earth(frame, draw=True)
         # is_index_finger_up, annotated_frame = vocab.IndexFingerUp_run(frame, draw=True)
         # is_middle_finger_up, annotated_frame = vocab.MiddleFingerUp_Dog(frame, draw=False)
-
+        is_middle_and_index_finger_up, annotated_frame = vocab.IndexMiddleFingerUp_peace(frame, draw=True)
 
         # if is_palm_opened:
         #     cv2.putText(annotated_frame, "Palm Opened:Recognise Tree", (10, 30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
@@ -42,7 +42,12 @@ def main():
         # else:
         #     cv2.putText(annotated_frame, "Middle Finger Not Up: Unable to recognise", (10, 30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-        # cv2.imshow("Frame", annotated_frame)
+        if is_middle_and_index_finger_up:
+            cv2.putText(annotated_frame, "Middle and index Finger Up: Recognised Peace", (10, 30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        else:
+            cv2.putText(annotated_frame, "Middle and index Finger Not Up: Unable to recognise", (10, 30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+
+        cv2.imshow("Frame", annotated_frame)
         key = cv2.waitKey(1)
         if key == ord('q'):
             break

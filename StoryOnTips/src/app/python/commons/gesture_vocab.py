@@ -116,7 +116,7 @@ class GestureVocabulary:
         
         return is_middle_finger_up and other_finger_closed,image
     
-    def IndexMiddleFingerUp(self,image,draw=False):
+    def IndexMiddleFingerUp_peace(self,image,draw=False):
         """Detect middle finger and index finger up gesture to recognise peace in the image."""
         image = self.handT.findHands(image=image,draw=draw)
         positions,image = self.handT.findPosition(image=image,draw=draw)
@@ -133,7 +133,7 @@ class GestureVocabulary:
 
                 if tp == 4:
                     if positions[tp]:
-                        if positions[tp][1] - positions[bp][1]>40:
+                        if positions[tp][1] - positions[bp][1]>20:
                             other_finger_closed  = False
                 elif tp == 12:
                     if positions[tp][2] < positions[bp][2]:
@@ -144,3 +144,5 @@ class GestureVocabulary:
                 else:
                     if positions[tp][2] < positions[mp][2]:
                         other_finger_closed = False 
+
+        return is_index_finger_up and is_middle_finger_up and other_finger_closed,image
