@@ -15,16 +15,16 @@ def main():
     save_model_path = Utility.config(Constants.MODEL_PARAMETERS,Constants.SAVED_MODEL_PATH)
 
     model = TrainingPipeline(epochs=epochs,learning_rate=learning_rate,batch_size=batch_size,device=device)
-    model.train()
+    # model.train()
     model.save_model(save_model_path)
 
-    # model evaluation
+    # # model evaluation
     print(f"[MODEL] Starting Model Evaulation .........")
     model.eval()
 
     # model testing
     print(f"[MODEL] Running inference on single frame .........")
-    model.predict(image_path='results/birds1.jpeg',class_names=Constants.CLASSES)
+    model.predict(image_path='test_img/birds.jpeg',class_names=Constants.CLASSES)
     
 if __name__ == "__main__":
     main()
